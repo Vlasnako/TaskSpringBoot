@@ -3,6 +3,7 @@ package com.vlasnakonechnyi.testproject.testproject.entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 public class CustomerDto {
@@ -19,6 +20,7 @@ public class CustomerDto {
     private String email;
 
     @Pattern(regexp = "^\\+\\d{5,13}$", message = "Phone number must start with + and be between 6 and 14 digits")
+    @Size(max = 14, message = "Phone number must be between 6 and 14 digits")
     private String phone;
 
     public CustomerDto(Long customerId, String fullName, String email, String phone) {
