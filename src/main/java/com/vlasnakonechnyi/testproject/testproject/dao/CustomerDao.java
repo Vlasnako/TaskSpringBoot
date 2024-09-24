@@ -5,6 +5,13 @@ import com.vlasnakonechnyi.testproject.testproject.entity.Customer;
 import java.util.List;
 
 public interface CustomerDao {
-    void createCustomer(Customer customer);
+    Customer createCustomer(Customer customer);
+
     List<Customer> getCustomers();
+
+    Customer getCustomerById(long id);
+
+    Customer updateCustomer(Customer customer);
+
+    boolean existsByEmail(String email);
 }

@@ -26,7 +26,7 @@ public class Customer {
     private String phone;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     @Override
     public String toString() {

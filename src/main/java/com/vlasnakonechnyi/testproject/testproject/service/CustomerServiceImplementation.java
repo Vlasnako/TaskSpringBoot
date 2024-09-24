@@ -18,8 +18,11 @@ class CustomerServiceImplementation implements CustomerService {
 
     @Override
     @Transactional
-    public void createCustomer(CustomerDto customerDto) {
-        customerDao.createCustomer(mapToEntity(customerDto));
+    public CustomerDto createCustomer(CustomerDto customerDto) {
+        Customer customer = customerDao.createCustomer(mapToEntity(customerDto));
+        if (customer == null) {
+            return null;
+        } else return mapToDto(customer);
     }
 
     @Override
@@ -29,8 +32,40 @@ class CustomerServiceImplementation implements CustomerService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public CustomerDto getCustomerById(long id) {
+        if (customerDao.getCustomerById(id) == null) {
+            return null;
+        } else {
+            return mapToDto(customerDao.getCustomerById(id));
+        }
+    }
+
+    @Override
+    public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
+        Customer existingCustomer = customerDao.getCustomerById(id);
+
+        if (existingCustomer != null) {
+            existingCustomer.setFullName(customerDto.getFullName());
+            existingCustomer.setPhone(customerDto.getPhone());
+            Customer customer = customerDao.updateCustomer(existingCustomer);
+            return mapToDto(customer);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void deleteCustomer(Long id) {
+        Customer existingCustomer = customerDao.getCustomerById(id);
+        if (existingCustomer != null) {
+            existingCustomer.setActive(false);
+            customerDao.updateCustomer(existingCustomer);
+        }
+    }
+
     private CustomerDto mapToDto(Customer customer) {
-        return new CustomerDto((long)customer.getId(), customer.getFullName(), customer.getEmail(), customer.getPhone());
+        return new CustomerDto((long) customer.getId(), customer.getFullName(), customer.getEmail(), customer.getPhone());
     }
 
     private Customer mapToEntity(CustomerDto customerDto) {
