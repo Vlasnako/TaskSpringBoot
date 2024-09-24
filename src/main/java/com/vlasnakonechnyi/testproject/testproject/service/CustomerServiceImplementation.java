@@ -18,18 +18,26 @@ class CustomerServiceImplementation implements CustomerService {
 
     @Override
     @Transactional
-    public void createCustomer(Customer customer) {
-
+    public void createCustomer(CustomerDto customerDto) {
+        customerDao.createCustomer(mapToEntity(customerDto));
     }
 
     @Override
     public List<CustomerDto> getCustomers() {
         return customerDao.getCustomers().stream()
-                .map(customer -> new CustomerDto(
-                        (long)customer.getId(),
-                        customer.getFullName(),
-                        customer.getEmail(),
-                        customer.getPhone()))
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
+    }
+
+    private CustomerDto mapToDto(Customer customer) {
+        return new CustomerDto((long)customer.getId(), customer.getFullName(), customer.getEmail(), customer.getPhone());
+    }
+
+    private Customer mapToEntity(CustomerDto customerDto) {
+        Customer customer = new Customer();
+        customer.setFullName(customerDto.getFullName());
+        customer.setEmail(customerDto.getEmail());
+        customer.setPhone(customerDto.getPhone());
+        return customer;
     }
 }
