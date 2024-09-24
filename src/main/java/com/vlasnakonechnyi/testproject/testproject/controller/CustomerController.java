@@ -24,7 +24,6 @@ public class CustomerController {
 
     @GetMapping("/customers/{id}")
     public ResponseEntity<CustomerDto> getCustomerById(@PathVariable Long id) {
-        System.out.println("Getting from endpoint");
         CustomerDto customerDto = customerService.getCustomerById(id);
         return customerDto != null ? ResponseEntity.ok(customerDto) : ResponseEntity.notFound().build();
     }
@@ -44,7 +43,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("/customers/{id}")
-    public void deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -38,7 +38,6 @@ public class CustomerDaoImplementation implements CustomerDao {
     @Override
     public Customer getCustomerById(long id) {
         Session session = entityManager.unwrap(Session.class);
-        System.out.println("Getting user by id: " + id);
         Query<Customer> query = session.createQuery("from Customer where isActive= true and id =" + id, Customer.class);
         return query.getSingleResultOrNull();
     }
